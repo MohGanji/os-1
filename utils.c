@@ -1,0 +1,96 @@
+#include "utils.h"
+
+void print(char* string){
+    write(STDOUT, string, strlen(string) );
+    // write(STDOUT, "\n", 1);
+}
+
+void printl(char* string, int size){
+    write(STDOUT, string, size);
+}
+
+void printInt(int num){
+    char str[100], tmpstr[100];
+    int itmp = 0, i = 0;
+    int rem;
+    while(num > 0){
+        rem = num%10;
+        num /=10;
+        str[i] = '0' + rem;
+        i++;
+    }
+    i--;
+    for(i; i>=0 ; i--){
+        tmpstr[itmp] = str[i];
+        itmp++;
+    }
+    tmpstr[itmp] = '\0';
+    print(tmpstr);
+    return;
+}
+
+struct Packet myread(int fd, char *buffer, int len){
+    struct Packet pack;
+    int pack_len;
+    pack_len = read(fd, buffer, len);
+    pack.len = pack_len-1;
+    buffer[pack_len-1] = '\0';
+    pack.data = buffer;
+    // print("in myread: ");print(pack.data);print("\n");
+    // printInt(pack.len);print("\n\n");
+    return pack;
+}
+
+int mystoi(char * str){
+    int i, res = 0, len = strlen(str);
+    for(i = 0; i < len; i++){
+        if(i)
+            res *= 10;
+        res += str[i]-'0';
+    }
+    return res;
+}
+
+// get sockaddr, IPv4 or IPv6:
+void *get_in_addr(struct sockaddr *sa)
+{
+    if (sa->sa_family == AF_INET) {
+        return &(((struct sockaddr_in*)sa)->sin_addr);
+    }
+
+    return &(((struct sockaddr_in6*)sa)->sin6_addr);
+}
+
+list *ls(char* directory){
+    int flag = 0;
+    list *lst = NULL;
+    DIR *d;
+    struct dirent *dir;
+    d = opendir(directory);
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            if (dir->d_name[0] == '.'){
+                continue;
+            }
+            if(!flag){
+                lst = create((char *)dir->d_name, NULL);
+                flag = 1;
+            } else {
+                lst = prepend(lst, (char *)dir->d_name);
+                print((char*) dir->d_name);print("\n");
+            }
+        }        
+        closedir(d);
+    }
+    return (list *)lst;
+}
+
+int mysend(int sock, char *buf, int len){
+    if (send(sock, buf, len, 0) == -1) {
+        print("ERR: send\n");
+        return 1;
+    }
+    return 0;
+}

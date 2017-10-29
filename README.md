@@ -5,3 +5,10 @@ references:
 - http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/socket.html
 - http://beej.us/guide/bgnet/output/html/multipage/clientserver.html
 - http://beej.us/guide/bgnet/output/html/singlepage/bgnet.html
+- https://linux.die.net/man/2/
+
+enum STATE {Idle, /*Data:*/ Data, Port, Dir, Files, /*Client:*/ Client}
+client:
+packet = myread(STDIN, buffer, sizeof(buffer));
+send(sock , packet.data , packet.len , 0 );
+response_len = recv( sock , buffer, 1024, 0);

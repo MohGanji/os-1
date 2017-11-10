@@ -2,17 +2,20 @@ CC = gcc
 CFLAG = -c
 DEBUG = -g
 
-ALL.O = list.o utils.o main_server.o client_connect.o server.o client.o data_server.o
+ALL.O = list.o DS_Struct.o utils.o main_server.o client_connect.o server.o client.o data_server.o
 
 all: $(ALL.O)
-	$(CC) main_server.c list.o utils.o server.o -o main_server.out
-	$(CC) data_server.c list.o utils.o server.o client_connect.o -o data_server.out
-	$(CC) client.c list.o utils.o client_connect.o -o client.out
-	
+	$(CC) main_server.c list.o DS_Struct.o utils.o server.o -o main_server.out
+	$(CC) data_server.c list.o DS_Struct.o utils.o server.o client_connect.o -o data_server.out
+	$(CC) client.c list.o DS_Struct.o utils.o client_connect.o -o client.out
+
 list.o: list.c list.h
 	$(CC) $(CFLAG) list.c
 
-utils.o: utils.c utils.h list.o list.h
+DS_Struct.o: DS_Struct.c DS_Struct.h list.o
+	$(CC) $(CFLAG) DS_Struct.c
+
+utils.o: utils.c utils.h list.o list.h DS_Struct.o DS_Struct.h
 	$(CC) $(CFLAG) utils.c
 
 main_server.o: main_server.c utils.h server.o

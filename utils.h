@@ -13,8 +13,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <dirent.h> 
+#include <fcntl.h>
 
-#include "list.h"
+#include "DS_Struct.h"
 
 // buffer[i] = '\0'; ==> changes buffer size, now we can only read i bytes.
 
@@ -27,7 +28,7 @@
 #define STDERR 2
 
 // enum of states for client and data_server
-enum STATE {Idle, /*Data:*/ Data, Port, Dir, Files, /*Client:*/ Client};
+enum STATE {Idle, /*Data:*/ Data, Port, Dir, Files, /*Client:*/ Client, /*data_server*/ Filename, Read};
 
 
 // structures.
@@ -35,6 +36,7 @@ struct Packet {
     char *data;
     int len;
 };
+
 
 // utility functions
 
@@ -44,6 +46,7 @@ void printInt(int num);
 struct Packet myread(int fd, char *buffer, int len);
 int mystoi(char *str);
 void *get_in_addr(struct sockaddr *sa);
-int mysend(int sock, char *buf, int len);    
+int mysend(int sock, char *buf, int len);
+struct Packet myrecv(int fd, char *buffer, int len);    
 
 #endif

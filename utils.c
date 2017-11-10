@@ -79,7 +79,7 @@ list *ls(char* directory){
                 flag = 1;
             } else {
                 lst = prepend(lst, (char *)dir->d_name);
-                print((char*) dir->d_name);print("\n");
+                // print((char*) dir->d_name);print("\n");
             }
         }        
         closedir(d);
@@ -93,4 +93,16 @@ int mysend(int sock, char *buf, int len){
         return 1;
     }
     return 0;
+}
+
+struct Packet myrecv(int fd, char *buffer, int len){
+    struct Packet pack;
+    int pack_len;
+    pack_len = recv(fd, buffer, len, 0);
+    pack.len = pack_len;
+    buffer[pack_len] = '\0';
+    pack.data = buffer;
+    // print("in myread: ");print(pack.data);print("\n");
+    // printInt(pack.len);print("\n\n");
+    return pack;
 }

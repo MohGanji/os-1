@@ -3,7 +3,7 @@
 
 
 typedef struct List{
-    char *data;
+    char data[1024];
     struct List* next;
 } list;
 

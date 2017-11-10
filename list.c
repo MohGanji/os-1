@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "list.h"
 
@@ -11,7 +12,7 @@ list *create(char *data,list *next)
         print("Error creating a new list.\n");
         exit(1);
     }
-    new_list->data = data;
+    strcpy(new_list->data, data);
     new_list->next = next;
     return new_list;
 }
